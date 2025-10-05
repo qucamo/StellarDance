@@ -1,126 +1,247 @@
-Description
+Stellar Dance is an interactive app that visualizes gravitational interactions in binary and triple star systems.
+It combines a Streamlit web UI with a Pygame desktop simulation window. Star parameters can be set manually, picked from presets, or loaded from NASA Exoplanet Archive (PS/PSComppars) and SIMBAD. An Education Mode (FAQ/quiz/glossary) is included.
 
-Stellar Dance is an interactive application for visualizing the gravitational interaction of binary and triple star systems.
-The project consists of a web interface on Streamlit and a separate simulation window on Pygame. The star parameters can be set manually, selected from presets, or downloaded from the NASA Exoplanet Archive (PS/PSComppars) and SIMBAD databases. There is a learning mode (FAQ/quiz/glossary).
+Table of Contents
 
-Project architecture
+Project Architecture
 
-The application is divided into three key files:
+Features
 
-start.py — entry point (launcher).
+Requirements
 
-Finds a free port, programmatically starts the Streamlit server and opens the browser when the server is ready.
+Installation & Run
 
-It works both from source and as an EXE (PyInstaller).
+A. Prebuilt EXE
 
-app.py — Web interface (Streamlit).
+B. From Source
 
-UI: system selection (2/3 stars), presets, parameter input, "Current parameters" section.
+Build EXE (PyInstaller)
 
-Data sources: NASA PS/PSComppars, SIMBAD (auto-synchronization with input fields).
+Usage
 
-The button to start an external simulation (creates user_stars.json and causes gravity.py ).
+Configuration (user_stars.json)
 
-Study mode: FAQs, Quiz, Glossary, quick answers on key terms.
+Troubleshooting
 
-gravity.py — simulator (Pygame).
+Repository Structure
 
-Reads the user_stars config.json (mass, radius, color, number of stars, speed of time).
+License & Credits
 
-Simulates pairs/triples with visualization and protection against numerical "explosions".
+Project Architecture
 
-It terminates correctly (without sys.exit()) so as not to conflict with Streamlit.
+start.py — launcher.
 
-Opportunities
+Finds a free port, programmatically starts the Streamlit server, and opens a browser after the server is healthy.
 
-System selection: double or triple.
+Works both from source and as a bundled EXE.
 
-Setting the parameters of each star:
+app.py — Streamlit UI.
 
-Presets (Sun, Sirius A/B, Betelgeuse, Proxima Centauri, Rigel).
+Choose system type (2/3 stars), presets, manual inputs, and see the “Current Star Parameters” panel.
 
-NASA Exoplanet Archive (PS/PSComppars) — mass-radius parameters by hostname.
+Load parameters from NASA PS/PSComppars and SIMBAD (auto-syncs to input widgets).
 
-SIMBAD is a spectral type estimate (mass/radius according to the O–M map).
+Button to start the external simulation (writes user_stars.json and launches gravity.py).
 
-Manual input (the step of the +/- buttons for fields is 10,000,000 for quick changes).
+Education Mode: FAQ, mini-quiz, glossary, quick Q&A.
 
-The "📊 Current Star Parameters” section always reflects the current values.
+Starry background (CSS) for a clean dark UI.
 
-The slider is ⏱️ Time Speed in the range of 1000...70000.
+gravity.py — Pygame simulator.
 
-Launching a separate simulation window (Pygame) with trajectories.
+Reads user_stars.json (mass, radius, color, number of stars, time speed).
 
-Educational Mode: FAQ, mini-quiz, glossary, quick response on key terms.
+Simulates 2–3 bodies with orbit visualization and guards against numerical blow-ups.
 
-Beautiful "cosmic" background and neat dark UI.
+Exits cleanly (no sys.exit()), so it plays nicely with Streamlit.
 
-Quality and reliability
+Features
 
-New NASA PS/PSComppars tables are used (instead of the outdated exoplanets) with fallback search logic (LIKE, NaN filtering).
+Binary/Triple modes (2 or 3 stars).
 
-Synchronization of parameters between the "model" and Streamlit widgets (so that the values are updated immediately).
+Presets: Sun, Sirius A/B, Betelgeuse, Proxima Centauri, Rigel.
 
-Protection against numerical errors and division by zero in the gravity model.
+NASA PS/PSComppars: load st_mass and st_rad by hostname.
 
-The launcher start.py:
+SIMBAD: estimate mass/radius by spectral type (O–M).
 
-waits for the server to be ready (health check) before opening the browser;
+Manual editing:
 
-it works correctly in the EXE, does not rely on python -m streamlit inside the assembly.
+Mass (kg), Radius (m), Color for each star.
 
-The simulation configuration is stored in user_stars.json for reproducibility
++/- step for numeric fields = 10,000,000 (fast adjustments).
 
-айдын, [05.10.2025 20:15]
-Usage example
+Live “📊 Current Star Parameters” panel (always reflects up-to-date values).
 
-Local source startup (Windows 10/11 x64)
-Requires Python 3.11+ installed.
+⏱ Time Speed slider: 1000…70000.
 
-# go to the
-cd project folder C:\Users\nuras\Downloads\NASAspaceapps
+Launches external Pygame simulation window.
 
-# (if scripts are blocked)
+Education Mode: FAQ, Quiz, Glossary, quick Q&A.
+
+Dark theme with starfield background.
+
+Requirements
+
+Windows 10/11 x64 (primary target).
+
+From source: Python 3.11+.
+
+Internet required for NASA/SIMBAD lookups.
+
+(Sometimes) Microsoft Visual C++ Redistributable 2015–2022 (x64) if the EXE complains about vcruntime*.dll.
+
+Installation & Run
+A. Prebuilt EXE
+
+Download the ZIP of the build: dist/start/.
+
+Extract (e.g., to C:\Apps\StellarDance\start\).
+
+Run start.exe.
+
+If SmartScreen warns: More info → Run anyway.
+
+Allow local firewall access if prompted.
+
+Your browser opens automatically at http://127.0.0.1:<port>.
+
+No other installation is required for the EXE.
+
+B. From Source
+# go to project folder
+cd C:\Users\nuras\Downloads\NASAspaceapps
+
+# (if scripts are restricted)
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
-# create and activate
-the python -mv environment.venv
+# create & activate venv
+python -m venv .venv
 .\.venv\Scripts\activate
 
 # install dependencies
 pip install --upgrade pip
 pip install -r requirements.txt
-# if there is no file, install:
+# if you don't have the file:
 # pip install streamlit pygame pandas numpy astroquery astropy matplotlib certifi requests
 
-# launch the launcher (it will open the browser itself when ready)
+# launch the app (the launcher will open the browser when ready)
 python start.py
 
 
-Launching the compiled version (EXE)
+Alternative (run Streamlit directly):
 
-Unpack the dist/start/ assembly folder.
+python -m streamlit run app.py --server.port 8501 --server.headless true
 
-Launch start.exe (with SmartScreen: "Advanced → Execute").
+Build EXE (PyInstaller)
+pyinstaller --noconfirm --clean --onedir --windowed ^
+  --add-data "app.py;." ^
+  --add-data "gravity.py;." ^
+  --add-data "user_stars.json;." ^
+  start.py
 
-The browser will open automatically; if not— open http://127.0.0.1:8501 .
 
-Parameter management
+Output: dist\start\start.exe.
 
-In the UI, select Binary or Triple.
+If pyinstaller is missing:
 
-Set the parameters of the stars:
+pip install pyinstaller
 
-via Presets / NASA /SIMBAD (Internet is required for NASA/SIMBAD);
+Usage
 
-or manually (fields "Mass (kg)" and "Radius (m)"; step +/- = 10,000,000).
+Select system: Binary (2) or Triple (3).
 
-Click “🚀 Launch Pygame Window” to launch the simulation in a separate window.
+Set star parameters:
 
-Note: The Pygame window is not available in a cloud environment (Streamlit Community Cloud). Use a local launcher or EXE. The Internet is required for NASA/SIMBAD; presets and manual input are available without it.
+Presets — apply to Star 1/2/3.
 
-# Quick start (briefly)
-python -mv .venv
-.\.venv\Scripts\activate
-pip install -r requirements.txt
-python start.py
+NASA — enter hostname (e.g., Kepler-10, HD 209458) and apply.
+
+SIMBAD — enter object name (e.g., Vega, Rigel) and apply.
+
+Custom — edit Mass (kg) and Radius (m) manually.
+The +/- step is 10,000,000 for fast changes.
+
+Check 📊 Current Star Parameters — it reflects the latest values.
+
+Set ⏱ Time Speed (1000…70000).
+
+Press “🚀 Launch Pygame Window” to run the simulation.
+
+On cloud platforms (e.g., Streamlit Community Cloud) an external Pygame window is not available — use local run or EXE.
+
+Configuration (user_stars.json)
+
+Created automatically by app.py before launching gravity.py.
+
+Binary example
+
+{
+  "system_type": "binary",
+  "time_speed": 5000,
+  "stars": [
+    {"mass": 1.989e30, "radius": 6.957e8, "color": "#FFD700"},
+    {"mass": 2.06e30,  "radius": 1.71e9,  "color": "#BFD9FF"}
+  ]
+}
+
+
+Triple example
+
+{
+  "system_type": "triple",
+  "time_speed": 12000,
+  "stars": [
+    {"mass": 1.989e30, "radius": 6.957e8, "color": "#FFD700"},
+    {"mass": 4.0e30,   "radius": 2.2e9,   "color": "#87CEFA"},
+    {"mass": 1.2e30,   "radius": 8.0e8,   "color": "#FF6F91"}
+  ]
+}
+
+Troubleshooting
+
+Browser shows “127.0.0.1 refused to connect”
+Use start.py or start.exe. The launcher opens the browser only after the server is healthy. If running Streamlit directly, give it a moment to start.
+
+NASA query failed
+Uses the Planetary Systems tables (PS/PSComppars). Try exact hostname (e.g., HD 209458, Kepler-10). Internet required.
+
+SIMBAD: Not found
+Check spelling. For rare objects without a spectral type, defaults are used (G-type).
+
+EXE fails / missing DLL
+Install Microsoft Visual C++ Redistributable 2015–2022 (x64).
+
+Antivirus blocks EXE
+Add to exceptions or confirm run (SmartScreen → “Run anyway”).
+
+Port is in use
+start.py picks a free port automatically (8501–8600). Close other instances or apps holding the port.
+
+Repository Structure
+.
+├── app.py            # Streamlit UI
+├── gravity.py        # Pygame simulation engine
+├── start.py          # Launcher (starts Streamlit and opens the browser)
+├── requirements.txt  # Dependencies
+├── user_stars.json   # Simulation config (auto-generated)
+└── README.md
+
+
+Example requirements.txt:
+
+streamlit
+pygame
+pandas
+numpy
+astroquery
+astropy
+matplotlib
+certifi
+requests
+
+License & Credits
+
+License: MIT (or update to your preferred license).
+
+Credits: NASA Exoplanet Archive and SIMBAD for open data; the Stellar Dance team
