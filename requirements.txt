@@ -1,0 +1,24 @@
+LIBRIARIES NEEDED FOR APP: 
+__________
+streamlit
+
+pygame
+
+pandas
+
+numpy
+
+astroquery
+
+astropy
+
+matplotlib
+
+certify
+
+requests
+
+
+___________
+
+Thank You~!
