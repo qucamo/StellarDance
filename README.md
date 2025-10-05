@@ -106,11 +106,11 @@ python start.py
 Alternative: run Streamlit directly
 
 powershell
-Копировать код
+
 python -m streamlit run app.py --server.port 8501 --server.headless true
 Build EXE with PyInstaller
 powershell
-Копировать код
+
 pyinstaller --noconfirm --clean --onedir --windowed ^
   --add-data "app.py;." ^
   --add-data "gravity.py;." ^
@@ -121,7 +121,7 @@ Output will be at: dist\start\start.exe.
 If PyInstaller is missing:
 
 powershell
-Копировать код
+
 pip install pyinstaller
 Usage
 Select system type: Binary (2) or Triple (3).
@@ -150,7 +150,7 @@ user_stars.json is created automatically by app.py before launching gravity.py.
 Binary example:
 
 json
-Копировать код
+
 {
   "system_type": "binary",
   "time_speed": 5000,
@@ -162,7 +162,7 @@ json
 Triple example:
 
 json
-Копировать код
+
 {
   "system_type": "triple",
   "time_speed": 12000,
@@ -197,7 +197,7 @@ start.py automatically picks a free port between 8501 and 8600. Close other inst
 
 Repository Structure
 bash
-Копировать код
+
 .
 app.py            # Streamlit UI
 gravity.py        # Pygame simulation engine
@@ -208,7 +208,7 @@ README.md
 Example requirements.txt:
 
 nginx
-Копировать код
+
 streamlit
 pygame
 pandas
